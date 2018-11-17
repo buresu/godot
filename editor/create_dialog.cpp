@@ -335,11 +335,12 @@ void CreateDialog::_update_search() {
 			continue;
 		}
 		bool cpp_type = ClassDB::class_exists(type);
+		bool custom_type = EditorNode::get_editor_data().get_custom_types().has(type);
 
 		if (base_type == "Node" && type.begins_with("Editor"))
 			continue; // do not show editor nodes
 
-		if (cpp_type && !ClassDB::can_instance(type))
+		if (cpp_type && !custom_type && !ClassDB::can_instance(type))
 			continue; // can't create what can't be instanced
 
 		if (cpp_type) {
@@ -383,7 +384,7 @@ void CreateDialog::_update_search() {
 			}
 		}
 
-		if (EditorNode::get_editor_data().get_custom_types().has(type) && ClassDB::is_parent_class(type, base_type)) {
+		if (custom_type && ClassDB::is_parent_class(type, base_type)) {
 			//there are custom types based on this... cool.
 
 			const Vector<EditorData::CustomType> &ct = EditorNode::get_editor_data().get_custom_types()[type];
