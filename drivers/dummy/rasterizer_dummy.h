@@ -702,6 +702,7 @@ public:
 	bool render_target_was_used(RID p_render_target) { return false; }
 	void render_target_clear_used(RID p_render_target) {}
 	void render_target_set_msaa(RID p_render_target, VS::ViewportMSAA p_msaa) {}
+	uint32_t render_target_get_fboid(RID p_render_target) const { return 0; }
 
 	/* CANVAS SHADOW */
 

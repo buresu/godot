@@ -5282,6 +5282,14 @@ void RasterizerStorageGLES2::render_target_set_msaa(RID p_render_target, VS::Vie
 	_render_target_allocate(rt);
 }
 
+uint32_t RasterizerStorageGLES2::render_target_get_fboid(RID p_render_target) const {
+
+	RenderTarget *rt = render_target_owner.getornull(p_render_target);
+	ERR_FAIL_COND_V(!rt, 0);
+
+	return rt->fbo;
+}
+
 /* CANVAS SHADOW */
 
 RID RasterizerStorageGLES2::canvas_light_shadow_buffer_create(int p_width) {

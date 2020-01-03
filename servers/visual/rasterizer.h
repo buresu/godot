@@ -564,6 +564,7 @@ public:
 	virtual bool render_target_was_used(RID p_render_target) = 0;
 	virtual void render_target_clear_used(RID p_render_target) = 0;
 	virtual void render_target_set_msaa(RID p_render_target, VS::ViewportMSAA p_msaa) = 0;
+	virtual uint32_t render_target_get_fboid(RID p_render_target) const = 0;
 
 	/* CANVAS SHADOW */
 

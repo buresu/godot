@@ -3944,6 +3944,15 @@
 				Returns the viewport's last rendered frame.
 			</description>
 		</method>
+		<method name="viewport_get_fboid" qualifiers="const">
+			<return type="int">
+			</return>
+			<argument index="0" name="viewport" type="RID">
+			</argument>
+			<description>
+				Returns the opengl id of the viewport's frame buffer object.
+			</description>
+		</method>
 		<method name="viewport_remove_canvas">
 			<return type="void">
 			</return>

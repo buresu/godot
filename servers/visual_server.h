@@ -633,6 +633,8 @@ public:
 
 	virtual RID viewport_get_texture(RID p_viewport) const = 0;
 
+	virtual uint32_t viewport_get_fboid(RID p_viewport) const = 0;
+
 	virtual void viewport_set_hide_scenario(RID p_viewport, bool p_hide) = 0;
 	virtual void viewport_set_hide_canvas(RID p_viewport, bool p_hide) = 0;
 	virtual void viewport_set_disable_environment(RID p_viewport, bool p_disable) = 0;

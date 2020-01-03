@@ -461,6 +461,8 @@ public:
 
 	BIND1RC(RID, viewport_get_texture, RID)
 
+	BIND1RC(uint32_t, viewport_get_fboid, RID)
+
 	BIND2(viewport_set_hide_scenario, RID, bool)
 	BIND2(viewport_set_hide_canvas, RID, bool)
 	BIND2(viewport_set_disable_environment, RID, bool)
