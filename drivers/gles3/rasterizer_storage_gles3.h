@@ -317,14 +317,6 @@ public:
 				detect_normal_ud(NULL) {
 		}
 
-		_ALWAYS_INLINE_ Texture *get_ptr() {
-			if (proxy) {
-				return proxy; //->get_ptr(); only one level of indirection, else not inlining possible.
-			} else {
-				return this;
-			}
-		}
-
 		~Texture() {
 
 			if (tex_id != 0) {
@@ -343,6 +335,19 @@ public:
 	};
 
 	mutable RID_Owner<Texture> texture_owner;
+
+	
+	_ALWAYS_INLINE_ Texture *_get_texture(RID p_texture) const {
+
+		Texture *texture = texture_owner.getornull(p_texture);
+
+		// resolve for proxies recursively
+		while (texture && texture->proxy) {
+			texture = texture->proxy;
+		}
+		
+		return texture;
+	}
 
 	Ref<Image> _get_gl_image_and_format(const Ref<Image> &p_image, Image::Format p_format, uint32_t p_flags, Image::Format &r_real_format, GLenum &r_gl_format, GLenum &r_gl_internal_format, GLenum &r_gl_type, bool &r_compressed, bool &r_srgb, bool p_force_decompress) const;
 

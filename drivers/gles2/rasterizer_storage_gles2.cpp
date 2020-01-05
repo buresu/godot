@@ -547,7 +547,7 @@ void RasterizerStorageGLES2::texture_allocate(RID p_texture, int p_width, int p_
 		p_flags &= ~VS::TEXTURE_FLAG_MIPMAPS; // no mipies for video
 	}
 
-	Texture *texture = texture_owner.getornull(p_texture);
+	Texture *texture = _get_texture(p_texture);
 	ERR_FAIL_COND(!texture);
 	texture->width = p_width;
 	texture->height = p_height;
@@ -623,7 +623,8 @@ void RasterizerStorageGLES2::texture_allocate(RID p_texture, int p_width, int p_
 }
 
 void RasterizerStorageGLES2::texture_set_data(RID p_texture, const Ref<Image> &p_image, int p_layer) {
-	Texture *texture = texture_owner.getornull(p_texture);
+
+	Texture *texture = _get_texture(p_texture);
 
 	ERR_FAIL_COND(!texture);
 	ERR_FAIL_COND(!texture->active);
@@ -772,7 +773,7 @@ void RasterizerStorageGLES2::texture_set_data_partial(RID p_texture, const Ref<I
 
 Ref<Image> RasterizerStorageGLES2::texture_get_data(RID p_texture, int p_layer) const {
 
-	Texture *texture = texture_owner.getornull(p_texture);
+	const Texture *texture = _get_texture(p_texture);
 
 	ERR_FAIL_COND_V(!texture, Ref<Image>());
 	ERR_FAIL_COND_V(!texture->active, Ref<Image>());
@@ -897,7 +898,7 @@ Ref<Image> RasterizerStorageGLES2::texture_get_data(RID p_texture, int p_layer) 
 
 void RasterizerStorageGLES2::texture_set_flags(RID p_texture, uint32_t p_flags) {
 
-	Texture *texture = texture_owner.getornull(p_texture);
+	Texture *texture = _get_texture(p_texture);
 	ERR_FAIL_COND(!texture);
 
 	bool had_mipmaps = texture->flags & VS::TEXTURE_FLAG_MIPMAPS;
@@ -947,7 +948,8 @@ void RasterizerStorageGLES2::texture_set_flags(RID p_texture, uint32_t p_flags) 
 }
 
 uint32_t RasterizerStorageGLES2::texture_get_flags(RID p_texture) const {
-	Texture *texture = texture_owner.getornull(p_texture);
+
+	const Texture *texture = _get_texture(p_texture);
 
 	ERR_FAIL_COND_V(!texture, 0);
 
@@ -955,7 +957,8 @@ uint32_t RasterizerStorageGLES2::texture_get_flags(RID p_texture) const {
 }
 
 Image::Format RasterizerStorageGLES2::texture_get_format(RID p_texture) const {
-	Texture *texture = texture_owner.getornull(p_texture);
+
+	const Texture *texture = _get_texture(p_texture);
 
 	ERR_FAIL_COND_V(!texture, Image::FORMAT_L8);
 
@@ -963,7 +966,8 @@ Image::Format RasterizerStorageGLES2::texture_get_format(RID p_texture) const {
 }
 
 VisualServer::TextureType RasterizerStorageGLES2::texture_get_type(RID p_texture) const {
-	Texture *texture = texture_owner.getornull(p_texture);
+
+	const Texture *texture = _get_texture(p_texture);
 
 	ERR_FAIL_COND_V(!texture, VS::TEXTURE_TYPE_2D);
 
@@ -971,7 +975,8 @@ VisualServer::TextureType RasterizerStorageGLES2::texture_get_type(RID p_texture
 }
 
 uint32_t RasterizerStorageGLES2::texture_get_texid(RID p_texture) const {
-	Texture *texture = texture_owner.getornull(p_texture);
+
+	const Texture *texture = _get_texture(p_texture);
 
 	ERR_FAIL_COND_V(!texture, 0);
 
@@ -979,7 +984,8 @@ uint32_t RasterizerStorageGLES2::texture_get_texid(RID p_texture) const {
 }
 
 void RasterizerStorageGLES2::texture_bind(RID p_texture, uint32_t p_texture_no) {
-	Texture *texture = texture_owner.getornull(p_texture);
+
+	const Texture *texture = _get_texture(p_texture);
 
 	ERR_FAIL_COND(!texture);
 
@@ -988,7 +994,8 @@ void RasterizerStorageGLES2::texture_bind(RID p_texture, uint32_t p_texture_no) 
 }
 
 uint32_t RasterizerStorageGLES2::texture_get_width(RID p_texture) const {
-	Texture *texture = texture_owner.getornull(p_texture);
+
+	const Texture *texture = _get_texture(p_texture);
 
 	ERR_FAIL_COND_V(!texture, 0);
 
@@ -996,7 +1003,8 @@ uint32_t RasterizerStorageGLES2::texture_get_width(RID p_texture) const {
 }
 
 uint32_t RasterizerStorageGLES2::texture_get_height(RID p_texture) const {
-	Texture *texture = texture_owner.getornull(p_texture);
+
+	const Texture *texture = _get_texture(p_texture);
 
 	ERR_FAIL_COND_V(!texture, 0);
 
@@ -1004,7 +1012,8 @@ uint32_t RasterizerStorageGLES2::texture_get_height(RID p_texture) const {
 }
 
 uint32_t RasterizerStorageGLES2::texture_get_depth(RID p_texture) const {
-	Texture *texture = texture_owner.getornull(p_texture);
+
+	const Texture *texture = _get_texture(p_texture);
 
 	ERR_FAIL_COND_V(!texture, 0);
 
@@ -1012,7 +1021,8 @@ uint32_t RasterizerStorageGLES2::texture_get_depth(RID p_texture) const {
 }
 
 void RasterizerStorageGLES2::texture_set_size_override(RID p_texture, int p_width, int p_height, int p_depth) {
-	Texture *texture = texture_owner.getornull(p_texture);
+
+	Texture *texture = _get_texture(p_texture);
 
 	ERR_FAIL_COND(!texture);
 	ERR_FAIL_COND(texture->render_target);
@@ -1025,26 +1035,29 @@ void RasterizerStorageGLES2::texture_set_size_override(RID p_texture, int p_widt
 }
 
 void RasterizerStorageGLES2::texture_set_path(RID p_texture, const String &p_path) {
-	Texture *texture = texture_owner.getornull(p_texture);
+
+	Texture *texture = _get_texture(p_texture);
 	ERR_FAIL_COND(!texture);
 
 	texture->path = p_path;
 }
 
 String RasterizerStorageGLES2::texture_get_path(RID p_texture) const {
-	Texture *texture = texture_owner.getornull(p_texture);
+
+	const Texture *texture = _get_texture(p_texture);
 	ERR_FAIL_COND_V(!texture, "");
 
 	return texture->path;
 }
 
 void RasterizerStorageGLES2::texture_debug_usage(List<VS::TextureInfo> *r_info) {
+
 	List<RID> textures;
 	texture_owner.get_owned_list(&textures);
 
 	for (List<RID>::Element *E = textures.front(); E; E = E->next()) {
 
-		Texture *t = texture_owner.getornull(E->get());
+		const Texture *t = _get_texture(E->get());
 		if (!t)
 			continue;
 		VS::TextureInfo tinfo;
@@ -1068,16 +1081,13 @@ void RasterizerStorageGLES2::textures_keep_original(bool p_enable) {
 
 Size2 RasterizerStorageGLES2::texture_size_with_proxy(RID p_texture) const {
 
-	const Texture *texture = texture_owner.getornull(p_texture);
+	const Texture *texture = _get_texture(p_texture);
 	ERR_FAIL_COND_V(!texture, Size2());
-	if (texture->proxy) {
-		return Size2(texture->proxy->width, texture->proxy->height);
-	} else {
-		return Size2(texture->width, texture->height);
-	}
+	return Size2(texture->width, texture->height);
 }
 
 void RasterizerStorageGLES2::texture_set_proxy(RID p_texture, RID p_proxy) {
+
 	Texture *texture = texture_owner.getornull(p_texture);
 	ERR_FAIL_COND(!texture);
 
@@ -1090,6 +1100,12 @@ void RasterizerStorageGLES2::texture_set_proxy(RID p_texture, RID p_proxy) {
 		Texture *proxy = texture_owner.get(p_proxy);
 		ERR_FAIL_COND(!proxy);
 		ERR_FAIL_COND(proxy == texture);
+		// check for infinite loop
+		Texture *child_proxy = proxy->proxy;
+		while (child_proxy) {
+			ERR_FAIL_COND(child_proxy == texture)
+			child_proxy = child_proxy->proxy;
+		}
 		proxy->proxy_owners.insert(texture);
 		texture->proxy = proxy;
 	}
@@ -1097,14 +1113,15 @@ void RasterizerStorageGLES2::texture_set_proxy(RID p_texture, RID p_proxy) {
 
 void RasterizerStorageGLES2::texture_set_force_redraw_if_visible(RID p_texture, bool p_enable) {
 
-	Texture *texture = texture_owner.getornull(p_texture);
+	Texture *texture = _get_texture(p_texture);
 	ERR_FAIL_COND(!texture);
 
 	texture->redraw_if_visible = p_enable;
 }
 
 void RasterizerStorageGLES2::texture_set_detect_3d_callback(RID p_texture, VisualServer::TextureDetectCallback p_callback, void *p_userdata) {
-	Texture *texture = texture_owner.get(p_texture);
+
+	Texture *texture = _get_texture(p_texture);
 	ERR_FAIL_COND(!texture);
 
 	texture->detect_3d = p_callback;
@@ -1112,7 +1129,8 @@ void RasterizerStorageGLES2::texture_set_detect_3d_callback(RID p_texture, Visua
 }
 
 void RasterizerStorageGLES2::texture_set_detect_srgb_callback(RID p_texture, VisualServer::TextureDetectCallback p_callback, void *p_userdata) {
-	Texture *texture = texture_owner.get(p_texture);
+
+	Texture *texture = _get_texture(p_texture);
 	ERR_FAIL_COND(!texture);
 
 	texture->detect_srgb = p_callback;
@@ -1120,7 +1138,8 @@ void RasterizerStorageGLES2::texture_set_detect_srgb_callback(RID p_texture, Vis
 }
 
 void RasterizerStorageGLES2::texture_set_detect_normal_callback(RID p_texture, VisualServer::TextureDetectCallback p_callback, void *p_userdata) {
-	Texture *texture = texture_owner.get(p_texture);
+
+	Texture *texture = _get_texture(p_texture);
 	ERR_FAIL_COND(!texture);
 
 	texture->detect_normal = p_callback;
@@ -1153,7 +1172,7 @@ void RasterizerStorageGLES2::sky_set_texture(RID p_sky, RID p_panorama, int p_ra
 		return; // the panorama was cleared
 	}
 
-	Texture *texture = texture_owner.getornull(sky->panorama);
+	Texture *texture = _get_texture(sky->panorama);
 	if (!texture) {
 		sky->panorama = RID();
 		ERR_FAIL_COND(!texture);
@@ -4605,7 +4624,7 @@ void RasterizerStorageGLES2::_render_target_allocate(RenderTarget *rt) {
 
 		/* Front FBO */
 
-		Texture *texture = texture_owner.getornull(rt->texture);
+		Texture *texture = _get_texture(rt->texture);
 		ERR_FAIL_COND(!texture);
 
 		// framebuffer
@@ -4957,7 +4976,7 @@ void RasterizerStorageGLES2::_render_target_clear(RenderTarget *rt) {
 		glDeleteFramebuffers(1, &rt->external.fbo);
 
 		// clean up our texture
-		Texture *t = texture_owner.get(rt->external.texture);
+		Texture *t = _get_texture(rt->external.texture);
 		t->alloc_height = 0;
 		t->alloc_width = 0;
 		t->width = 0;
@@ -4979,7 +4998,7 @@ void RasterizerStorageGLES2::_render_target_clear(RenderTarget *rt) {
 		rt->depth = 0;
 	}
 
-	Texture *tex = texture_owner.get(rt->texture);
+	Texture *tex = _get_texture(rt->texture);
 	tex->alloc_height = 0;
 	tex->alloc_width = 0;
 	tex->width = 0;
@@ -5106,7 +5125,7 @@ void RasterizerStorageGLES2::render_target_set_external_texture(RID p_render_tar
 			}
 
 			// clean up our texture
-			Texture *t = texture_owner.get(rt->external.texture);
+			Texture *t = _get_texture(rt->external.texture);
 			t->alloc_height = 0;
 			t->alloc_width = 0;
 			t->width = 0;
@@ -5158,7 +5177,7 @@ void RasterizerStorageGLES2::render_target_set_external_texture(RID p_render_tar
 			glBindFramebuffer(GL_FRAMEBUFFER, rt->external.fbo);
 
 			// find our texture
-			t = texture_owner.get(rt->external.texture);
+			t = _get_texture(rt->external.texture);
 		}
 
 		// set our texture
